@@ -1,0 +1,16 @@
+{
+  "name": "sharyfi-api",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@google-cloud/storage": "^2.5.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^3.18.0",
+    "multer": "^1.4.1",
+    "uuid": "^3.3.2"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}

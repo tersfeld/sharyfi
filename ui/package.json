@@ -1,0 +1,33 @@
+{
+  "name": "sharyfi-ui",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@babel/core": "^7.4.5",
+    "antd": "^3.19.5",
+    "axios": "^0.19.0",
+    "babel-loader": "8.0.5",
+    "caniuse-lite": "1.0.30000974",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "3.0.1",
+    "serve": "^11.1.0"
+  },
+  "scripts": {
+    "deploy": "gcloud app deploy",
+    "start": "serve build",
+    "prestart": "yarn add serve",
+    "local": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [],
+    "development": []
+  },
+  "devDependencies": {}
+}
