@@ -35,6 +35,13 @@ const multer = Multer({
   storage: ds
 });
 
+if (!BUCKET_NAME) {
+  console.log(
+    "Error: A bucket name needs to be set as the env variable BUCKET_NAME."
+  );
+  process.exit();
+}
+
 const bucket = storage.bucket(BUCKET_NAME);
 
 app.get("/", (req, res, next) => {
