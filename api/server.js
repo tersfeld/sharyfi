@@ -44,11 +44,11 @@ if (!BUCKET_NAME) {
 
 const bucket = storage.bucket(BUCKET_NAME);
 
-app.get("/", (req, res, next) => {
+app.get("/", (req, res) => {
   res.status(200).send("OK");
 });
 
-app.post("/files/delete", (req, res, next) => {
+app.post("/files/delete", (req, res) => {
   if (!req.body.filename) {
     res.status(400).send("No file to delete.");
     return;
@@ -59,18 +59,18 @@ app.post("/files/delete", (req, res, next) => {
   });
 });
 
-app.get("/files/list/:expireInDays", (req, res, next) => {
+app.get("/files/list/:expireInDays", (req, res) => {
   bucket
     .getFiles()
     .then(results => {
       const files = results[0];
 
-      console.log(files.length);
+      console.debug(files.length);
 
-      if (files.length == 0) {
+      if (files.length === 0) {
         res.status(200).send("[]");
       }
-      fileList = [];
+      let fileList = [];
 
       files.forEach(file => {
         fileList.push(
@@ -82,16 +82,22 @@ app.get("/files/list/:expireInDays", (req, res, next) => {
             };
             console.debug("iterating " + file.name);
 
-            file.getSignedUrl(options).then(url => {
-              const fileDescriptor = {
-                uid: uuidv4(),
-                name: file.name,
-                status: "done",
-                url: url
-              };
-              console.debug("resolving");
-              resolve(fileDescriptor);
-            });
+            file
+              .getSignedUrl(options)
+              .then(url => {
+                const fileDescriptor = {
+                  uid: uuidv4(),
+                  name: file.name,
+                  status: "done",
+                  url: url
+                };
+                console.debug("resolving");
+                resolve(fileDescriptor);
+              })
+              .error(error => {
+                console.debug(error);
+                reject(error);
+              });
           })
         );
       });
@@ -102,6 +108,7 @@ app.get("/files/list/:expireInDays", (req, res, next) => {
     })
     .catch(err => {
       console.error("ERROR:", err);
+      res.status(500).json({ error: err });
     });
 });
 
